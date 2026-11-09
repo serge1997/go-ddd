@@ -1,11 +1,11 @@
 package database
 
-import "database/sql"
+import "gorm.io/gorm"
 
-var Db *sql.DB
+var Db *gorm.DB
 
 func New() error {
-	db, err := sql.Open("", "")
+	db, err := gorm.Open(&gorm.Config{})
 	if err != nil {
 		return err
 	}

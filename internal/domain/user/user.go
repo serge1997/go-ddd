@@ -11,11 +11,22 @@ type User struct {
 }
 
 func New(dto userdto.UserCreateDTO) *User {
-	return &User{Name: dto.Name, Email: NewEmailVo(&dto.Email)}
+	return &User{Name: dto.Name, Email: NewEmailVo(dto.Email)}
 }
 
 func ToResponse(u *User) userdto.UserResponseDTO {
-	return userdto.UserResponseDTO{}
+	return userdto.UserResponseDTO{
+		Id:    u.Id,
+		Name:  u.Name,
+		Email: u.Email.email,
+	}
+}
+
+func ToMinifiedResponse(u *User) userdto.UserReponseDTOMinified {
+	return userdto.UserReponseDTOMinified{
+		Id:   u.Id,
+		Name: u.Name,
+	}
 }
 
 func ToResponseCollection(users []*User) []userdto.UserResponseDTO {
@@ -28,7 +39,7 @@ func ToResponseCollection(users []*User) []userdto.UserResponseDTO {
 
 func (u *User) Update(dto userdto.UserUpdateDTO) {
 	u.Name = dto.Name
-	u.Email = NewEmailVo(&dto.Email)
+	u.Email = NewEmailVo(dto.Email)
 }
 
 func (u *User) Is(us *User) bool {

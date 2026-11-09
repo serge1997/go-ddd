@@ -2,18 +2,18 @@ package repository
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 
 	"github.com/serge1997/go-ddd/internal/domain/post"
 	"github.com/serge1997/go-ddd/internal/shared/domain"
+	"gorm.io/gorm"
 )
 
 type postRepository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewPostRepository(db *sql.DB) postRepository {
+func NewPostRepository(db *gorm.DB) postRepository {
 	return postRepository{db}
 }
 

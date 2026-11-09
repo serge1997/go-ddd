@@ -21,7 +21,7 @@ func New(dto postdto.PostCreateDTO, author *user.User) *Post {
 }
 
 func ToResponse(post *Post) postdto.PostResponseDTO {
-	return postdto.PostResponseDTO{Id: post.Id, Title: post.Title, Content: post.Content, Author: post.Author.Name}
+	return postdto.PostResponseDTO{Id: post.Id, Title: post.Title, Content: post.Content, Author: user.ToMinifiedResponse(post.Author)}
 }
 
 func ToResponseCollection(posts []*Post) []postdto.PostResponseDTO {
