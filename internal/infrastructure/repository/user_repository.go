@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/serge1997/go-ddd/internal/domain/user"
@@ -20,7 +21,7 @@ func NewUserRepository(db *gorm.DB) *userRepository {
 }
 func (u *userRepository) FindAll(ctx context.Context) ([]*user.User, error) {
 	var users []model.UserModel
-	err := u.db.Find(&users).Error
+	err := u.db.WithContext(ctx).Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
@@ -35,17 +36,23 @@ func (u *userRepository) Save(ctx context.Context, user *user.User) (*user.User,
 	return mapper.UserToDomain(data), nil
 }
 func (u *userRepository) Update(ctx context.Context, user *user.User) (*user.User, error) {
-	var model = mapper.UserToModel(user)
-	if err := u.db.WithContext(ctx).Save(&model).Error; err != nil {
+	var m = mapper.UserToModel(user)
+	if user.Id == 0 {
+		return nil, fmt.Errorf("Id must be provided for update record")
+	}
+	if err := u.db.WithContext(ctx).Save(&m).Error; err != nil {
 		return nil, fmt.Errorf("error on update user: %w", err)
 	}
-	return mapper.UserToDomain(model), nil
+	return mapper.UserToDomain(m), nil
 }
 
 func (u *userRepository) Find(ctx context.Context, id int) (*user.User, error) {
 	var user model.UserModel
 	if err := u.db.WithContext(ctx).Where("id = ?", id).First(&user).Error; err != nil {
-		return nil, fmt.Errorf("Post %w: %s", domain.ErrNotFound, err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("Post %w: %s", domain.ErrNotFound, err)
+		}
+		return nil, fmt.Errorf("find post: %w", err)
 	}
 	return mapper.UserToDomain(user), nil
 }

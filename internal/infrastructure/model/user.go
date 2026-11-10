@@ -7,9 +7,10 @@ import (
 
 type UserModel struct {
 	gorm.Model
-	Id    int    `gorm:"column:id,primaryKey"`
-	Name  string `gorm:"column:name"`
-	Email string `gorm:"column:email"`
+	Id    int         `gorm:"column:id,primaryKey"`
+	Name  string      `gorm:"column:name"`
+	Email string      `gorm:"column:email"`
+	Posts []PostModel `gorm:"foreignKey:AuthorId"`
 }
 
 func NewUserModel(u *user.User) UserModel {
@@ -18,4 +19,8 @@ func NewUserModel(u *user.User) UserModel {
 		Name:  u.Name,
 		Email: u.Email.Value(),
 	}
+}
+
+func (UserModel) TableName() string {
+	return "users"
 }
