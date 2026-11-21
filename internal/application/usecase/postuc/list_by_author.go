@@ -25,9 +25,9 @@ func (p ListByAuthorUseCase) Execute(ctx context.Context, authorId int) result.R
 	if err != nil {
 		return result.Fail[[]postdto.PostResponseDTO](err)
 	}
-	posts, err := p.reposistory.FindByAuthor(ctx, auth.Id)
+	rows, err := p.reposistory.FindByAuthor(ctx, auth.Id)
 	if err != nil {
 		return result.Fail[[]postdto.PostResponseDTO](err)
 	}
-	return result.Ok(post.ToResponseCollection(posts))
+	return result.Ok(post.ToResponseList(rows))
 }

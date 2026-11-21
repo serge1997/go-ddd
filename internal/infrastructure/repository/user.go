@@ -16,10 +16,10 @@ type userRepository struct {
 	db *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) *userRepository {
-	return &userRepository{db}
+func NewUserRepository(db *gorm.DB) userRepository {
+	return userRepository{db}
 }
-func (u *userRepository) FindAll(ctx context.Context) ([]*user.User, error) {
+func (u userRepository) FindAll(ctx context.Context) ([]*user.User, error) {
 	var users []model.UserModel
 	err := u.db.WithContext(ctx).Find(&users).Error
 	if err != nil {
@@ -27,7 +27,7 @@ func (u *userRepository) FindAll(ctx context.Context) ([]*user.User, error) {
 	}
 	return mapper.UserModelsToDomainCollection(users), nil
 }
-func (u *userRepository) Save(ctx context.Context, user *user.User) (*user.User, error) {
+func (u userRepository) Save(ctx context.Context, user *user.User) (*user.User, error) {
 	data := mapper.UserToModel(user)
 	err := u.db.WithContext(ctx).Create(&data).Error
 	if err != nil {
@@ -35,7 +35,7 @@ func (u *userRepository) Save(ctx context.Context, user *user.User) (*user.User,
 	}
 	return mapper.UserToDomain(data), nil
 }
-func (u *userRepository) Update(ctx context.Context, user *user.User) (*user.User, error) {
+func (u userRepository) Update(ctx context.Context, user *user.User) (*user.User, error) {
 	var m = mapper.UserToModel(user)
 	if user.Id == 0 {
 		return nil, fmt.Errorf("Id must be provided for update record")
@@ -46,7 +46,7 @@ func (u *userRepository) Update(ctx context.Context, user *user.User) (*user.Use
 	return mapper.UserToDomain(m), nil
 }
 
-func (u *userRepository) Find(ctx context.Context, id int) (*user.User, error) {
+func (u userRepository) Find(ctx context.Context, id int) (*user.User, error) {
 	var user model.UserModel
 	if err := u.db.WithContext(ctx).Where("id = ?", id).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

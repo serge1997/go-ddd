@@ -14,29 +14,6 @@ func New(dto userdto.UserCreateDTO) *User {
 	return &User{Name: dto.Name, Email: NewEmailVo(dto.Email)}
 }
 
-func ToResponse(u *User) userdto.UserResponseDTO {
-	return userdto.UserResponseDTO{
-		Id:    u.Id,
-		Name:  u.Name,
-		Email: u.Email.email,
-	}
-}
-
-func ToMinifiedResponse(u *User) userdto.UserReponseDTOMinified {
-	return userdto.UserReponseDTOMinified{
-		Id:   u.Id,
-		Name: u.Name,
-	}
-}
-
-func ToResponseCollection(users []*User) []userdto.UserResponseDTO {
-	var result []userdto.UserResponseDTO
-	for _, user := range users {
-		result = append(result, ToResponse(user))
-	}
-	return result
-}
-
 func (u *User) Update(dto userdto.UserUpdateDTO) {
 	u.Name = dto.Name
 	u.Email = NewEmailVo(dto.Email)

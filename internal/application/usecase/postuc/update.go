@@ -10,28 +10,29 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
-type PostUpdateUseCase struct {
+type UpdateUseCase struct {
 	repository     entity.Repository
 	userRepository user.Repository
 }
 
-func NewPostUpdateUseCase(repo post.Repository, userRepository user.Repository) PostUpdateUseCase {
-	return PostUpdateUseCase{
+func NewPostUpdateUseCase(repo post.Repository, userRepository user.Repository) UpdateUseCase {
+	return UpdateUseCase{
 		repository:     repo,
 		userRepository: userRepository,
 	}
 }
 
-func (p PostUpdateUseCase) Execute(ctx context.Context, dto postdto.PostUpdateDTO) result.Result[postdto.PostResponseDTO] {
-	post, err := p.repository.Find(ctx, dto.Id)
+func (p UpdateUseCase) Execute(ctx context.Context, dto postdto.PostUpdateDTO) result.Result[postdto.PostResponseDTO] {
+	row, err := p.repository.Find(ctx, dto.Id)
 	if err != nil {
 		return result.Fail[postdto.PostResponseDTO](err)
 	}
-	author, err := p.userRepository.Find(ctx, post.Id)
+	author, err := p.userRepository.Find(ctx, row.Id)
 	if err != nil {
 		return result.Fail[postdto.PostResponseDTO](err)
 	}
-	if !post.IsAuthor(author) {
+	post := post.Restore(row)
+	if !post.IsAuthor(author.Id) {
 		return result.Fail[postdto.PostResponseDTO](entity.ErrNotAuthor)
 	}
 	post.Update(dto)

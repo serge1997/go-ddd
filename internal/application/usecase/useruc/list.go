@@ -21,5 +21,5 @@ func (u ListUseCase) Execute(ctx context.Context) result.Result[[]userdto.UserRe
 	if err != nil {
 		return result.Fail[[]userdto.UserResponseDTO](err)
 	}
-	return result.Ok(user.ToResponseCollection(users))
+	return result.Ok(user.ToResponseList(users))
 }

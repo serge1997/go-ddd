@@ -26,7 +26,7 @@ func (p CreateUseCase) Execute(ctx context.Context, dto postdto.PostCreateDTO) r
 	if err != nil {
 		return result.Fail[postdto.PostResponseDTO](err)
 	}
-	newPost := post.New(dto, auth)
+	newPost := post.New(dto, auth.Id)
 	saved, err := p.repository.Save(ctx, newPost)
 	if err != nil {
 		return result.Fail[postdto.PostResponseDTO](err)

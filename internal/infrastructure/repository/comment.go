@@ -32,7 +32,7 @@ func (c commentRepository) FindByPost(ctx context.Context, postId int) ([]commen
 		Select(`c.id, c.author_id, u.name as author_name,
 			c.content, c.created_at, c.updated_at
 		`).
-		Joins("users as u on u.id = c.author_id").
+		Joins("JOIN users as u on u.id = c.author_id").
 		Where("post_id = ?", postId).
 		Scan(&rows).Error
 	if err != nil {
