@@ -8,15 +8,15 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
-type UserListUseCase struct {
+type ListUseCase struct {
 	repository user.Repository
 }
 
-func NewUserListUseCase(repo user.Repository) UserListUseCase {
-	return UserListUseCase{repo}
+func NewListUseCase(repo user.Repository) ListUseCase {
+	return ListUseCase{repo}
 }
 
-func (u UserListUseCase) Execute(ctx context.Context) result.Result[[]userdto.UserResponseDTO] {
+func (u ListUseCase) Execute(ctx context.Context) result.Result[[]userdto.UserResponseDTO] {
 	users, err := u.repository.FindAll(ctx)
 	if err != nil {
 		return result.Fail[[]userdto.UserResponseDTO](err)

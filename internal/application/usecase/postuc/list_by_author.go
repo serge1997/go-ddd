@@ -9,18 +9,18 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
-type PostListByAuthorUseCase struct {
+type ListByAuthorUseCase struct {
 	reposistory     post.Repository
 	userReposistory user.Repository
 }
 
-func NewPostListByAuthorUseCase(repo post.Repository, userRepository user.Repository) PostListByAuthorUseCase {
-	return PostListByAuthorUseCase{
+func NewListByAuthorUseCase(repo post.Repository, userRepository user.Repository) ListByAuthorUseCase {
+	return ListByAuthorUseCase{
 		reposistory:     repo,
 		userReposistory: userRepository,
 	}
 }
-func (p PostListByAuthorUseCase) Execute(ctx context.Context, authorId int) result.Result[[]postdto.PostResponseDTO] {
+func (p ListByAuthorUseCase) Execute(ctx context.Context, authorId int) result.Result[[]postdto.PostResponseDTO] {
 	auth, err := p.userReposistory.Find(ctx, authorId)
 	if err != nil {
 		return result.Fail[[]postdto.PostResponseDTO](err)

@@ -11,7 +11,7 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/domain"
 )
 
-func ListByAuthor(usecase postuc.PostListByAuthorUseCase) http.HandlerFunc {
+func ListByAuthor(usecase postuc.ListByAuthorUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		paramsAuthorId := chi.URLParam(r, "authorId")
 		authorId, err := strconv.Atoi(paramsAuthorId)
@@ -30,7 +30,7 @@ func ListByAuthor(usecase postuc.PostListByAuthorUseCase) http.HandlerFunc {
 		responseOk(w, http.StatusOK, "List posts by author", result.Value())
 	}
 }
-func StorePost(usecase postuc.PostCreateUseCase) http.HandlerFunc {
+func StorePost(usecase postuc.CreateUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dto, err := parseRequestBody[postdto.PostCreateDTO](r)
 		if err != nil {
@@ -46,7 +46,7 @@ func StorePost(usecase postuc.PostCreateUseCase) http.HandlerFunc {
 	}
 }
 
-func ShowPost(usecase postuc.PostGetUseCase) http.HandlerFunc {
+func ShowPost(usecase postuc.GetUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		idParam := chi.URLParam(r, "id")
 		id, err := strconv.Atoi(idParam)
@@ -62,7 +62,7 @@ func ShowPost(usecase postuc.PostGetUseCase) http.HandlerFunc {
 	}
 }
 
-func UpdatePost(usecase postuc.PostUpdateUseCase) http.HandlerFunc {
+func UpdatePost(usecase postuc.UpdateUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dto, err := parseRequestBody[postdto.PostUpdateDTO](r)
 		if err != nil {

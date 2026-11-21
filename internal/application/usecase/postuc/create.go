@@ -9,19 +9,19 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
-type PostCreateUseCase struct {
+type CreateUseCase struct {
 	repository     post.Repository
 	userRepository user.Repository
 }
 
-func NewPostCreateUseCase(repo post.Repository, userRepository user.Repository) PostCreateUseCase {
-	return PostCreateUseCase{
+func NewCreateUseCase(repo post.Repository, userRepository user.Repository) CreateUseCase {
+	return CreateUseCase{
 		repository:     repo,
 		userRepository: userRepository,
 	}
 }
 
-func (p PostCreateUseCase) Execute(ctx context.Context, dto postdto.PostCreateDTO) result.Result[postdto.PostResponseDTO] {
+func (p CreateUseCase) Execute(ctx context.Context, dto postdto.PostCreateDTO) result.Result[postdto.PostResponseDTO] {
 	auth, err := p.userRepository.Find(ctx, dto.AuthorId)
 	if err != nil {
 		return result.Fail[postdto.PostResponseDTO](err)

@@ -11,7 +11,7 @@ import (
 	"github.com/serge1997/go-ddd/internal/application/usecase/useruc"
 )
 
-func ShowUser(usecase useruc.UserGetUseCase) http.HandlerFunc {
+func ShowUser(usecase useruc.GetUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		idparam := chi.URLParam(r, "id")
 		id, err := strconv.Atoi(idparam)
@@ -25,7 +25,7 @@ func ShowUser(usecase useruc.UserGetUseCase) http.HandlerFunc {
 		responseOk(w, http.StatusOK, fmt.Sprintf("showing a user, id: %d", id), response.Value())
 	}
 }
-func IndexUser(usecase useruc.UserListUseCase) http.HandlerFunc {
+func IndexUser(usecase useruc.ListUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := usecase.Execute(r.Context())
 		if response.IsFail() {
@@ -36,7 +36,7 @@ func IndexUser(usecase useruc.UserListUseCase) http.HandlerFunc {
 	}
 }
 
-func StoreUser(usecase useruc.UserCreateUseCase) http.HandlerFunc {
+func StoreUser(usecase useruc.CreateUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var dto userdto.UserCreateDTO
 		if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {
@@ -52,7 +52,7 @@ func StoreUser(usecase useruc.UserCreateUseCase) http.HandlerFunc {
 	}
 }
 
-func UpdateUser(usecase useruc.UserUpdateUseCase) http.HandlerFunc {
+func UpdateUser(usecase useruc.UpdateUseCase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var dto userdto.UserUpdateDTO
 		if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {

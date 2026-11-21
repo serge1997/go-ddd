@@ -3,17 +3,17 @@ package useruc
 import "github.com/serge1997/go-ddd/internal/domain/user"
 
 type UseCase struct {
-	CreateUseCase UserCreateUseCase
-	UpdateUseCase UserUpdateUseCase
-	GetUseCase    UserGetUseCase
-	ListUseCase   UserListUseCase
+	CreateUseCase CreateUseCase
+	UpdateUseCase UpdateUseCase
+	GetUseCase    GetUseCase
+	ListUseCase   ListUseCase
 }
 
 func New(repo user.Repository) UseCase {
 	return UseCase{
-		GetUseCase:    NewUserGetUseCase(repo),
+		GetUseCase:    NewGetUseCase(repo),
 		CreateUseCase: NewCreateUseCase(repo),
-		ListUseCase:   NewUserListUseCase(repo),
-		UpdateUseCase: NewUserUpdateUseCase(repo),
+		ListUseCase:   NewListUseCase(repo),
+		UpdateUseCase: NewUpdateUseCase(repo),
 	}
 }

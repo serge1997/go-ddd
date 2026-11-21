@@ -8,15 +8,15 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
-type UserUpdateUseCase struct {
+type UpdateUseCase struct {
 	repository entity.Repository
 }
 
-func NewUserUpdateUseCase(repo entity.Repository) UserUpdateUseCase {
-	return UserUpdateUseCase{repo}
+func NewUpdateUseCase(repo entity.Repository) UpdateUseCase {
+	return UpdateUseCase{repo}
 }
 
-func (u UserUpdateUseCase) Execute(ctx context.Context, dto userdto.UserUpdateDTO) result.Result[userdto.UserResponseDTO] {
+func (u UpdateUseCase) Execute(ctx context.Context, dto userdto.UserUpdateDTO) result.Result[userdto.UserResponseDTO] {
 	user, err := u.repository.Find(ctx, dto.Id)
 	if err != nil {
 		return result.Fail[userdto.UserResponseDTO](err)

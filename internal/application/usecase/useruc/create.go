@@ -8,15 +8,15 @@ import (
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
-type UserCreateUseCase struct {
+type CreateUseCase struct {
 	Repository user.Repository
 }
 
-func NewCreateUseCase(repo user.Repository) UserCreateUseCase {
-	return UserCreateUseCase{repo}
+func NewCreateUseCase(repo user.Repository) CreateUseCase {
+	return CreateUseCase{repo}
 }
 
-func (u UserCreateUseCase) Execute(ctx context.Context, dto userdto.UserCreateDTO) result.Result[userdto.UserResponseDTO] {
+func (u CreateUseCase) Execute(ctx context.Context, dto userdto.UserCreateDTO) result.Result[userdto.UserResponseDTO] {
 	if err := dto.Validate(); err != nil {
 		return result.Fail[userdto.UserResponseDTO](err)
 	}

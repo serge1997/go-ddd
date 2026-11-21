@@ -6,17 +6,17 @@ import (
 )
 
 type UseCase struct {
-	CreateUsease  PostCreateUseCase
-	UpdateUseCase PostUpdateUseCase
-	GetUseCase    PostGetUseCase
-	ListByAuthor  PostListByAuthorUseCase
+	CreateUsease  CreateUseCase
+	UpdateUseCase UpdateUseCase
+	GetUseCase    GetUseCase
+	ListByAuthor  ListByAuthorUseCase
 }
 
 func New(repo post.Repository, userRepository user.Repository) UseCase {
 	return UseCase{
-		CreateUsease:  NewPostCreateUseCase(repo, userRepository),
+		CreateUsease:  NewCreateUseCase(repo, userRepository),
 		UpdateUseCase: NewPostUpdateUseCase(repo, userRepository),
-		GetUseCase:    NewPostGetUseCase(repo),
-		ListByAuthor:  NewPostListByAuthorUseCase(repo, userRepository),
+		GetUseCase:    NewGetUseCase(repo),
+		ListByAuthor:  NewListByAuthorUseCase(repo, userRepository),
 	}
 }
