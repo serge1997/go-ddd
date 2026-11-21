@@ -16,10 +16,10 @@ func NewCreateUseCase(repo comment.Repository) CreateUseCase {
 	return CreateUseCase{repo}
 }
 
-func (c *CreateUseCase) Execute(ctx context.Context) result.Result[*commentdto.CommentResponse] {
+func (c *CreateUseCase) Execute(ctx context.Context) result.Result[commentdto.Response] {
 	resp, err := c.repo.Save(ctx, &comment.Comment{})
 	if err != nil {
-		return result.Fail[*commentdto.CommentResponse](err)
+		return result.Fail[commentdto.Response](err)
 	}
-	return result.Ok(resp)
+	return result.Ok(comment.ToResponseFromRaw(*resp))
 }

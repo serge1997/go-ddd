@@ -16,10 +16,10 @@ func NewListByPostUseCase(repo comment.Repository) ListByPostUseCase {
 	return ListByPostUseCase{repo}
 }
 
-func (c *ListByPostUseCase) Execute(ctx context.Context) result.Result[[]commentdto.CommentResponse] {
-	response, err := c.repo.FindByPost(ctx, 34)
+func (c *ListByPostUseCase) Execute(ctx context.Context) result.Result[[]commentdto.Response] {
+	rows, err := c.repo.FindByPost(ctx, 34)
 	if err != nil {
-		return result.Fail[[]commentdto.CommentResponse](err)
+		return result.Fail[[]commentdto.Response](err)
 	}
-	return result.Ok(response)
+	return result.Ok(comment.ToResponseList(rows))
 }

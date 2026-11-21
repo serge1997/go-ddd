@@ -7,6 +7,6 @@ import (
 )
 
 type Repository interface {
-	Save(context.Context, *Comment) (*commentdto.CommentResponse, error)
-	FindByPost(ctx context.Context, postId int) ([]commentdto.CommentResponse, error)
+	Save(context.Context, *Comment) (*commentdto.Raw, error)
+	FindByPost(ctx context.Context, postId int) ([]commentdto.Raw, error)
 }

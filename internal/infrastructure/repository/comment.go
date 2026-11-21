@@ -17,17 +17,17 @@ func NewCommentRepository(db *gorm.DB) commentRepository {
 	return commentRepository{db}
 }
 
-func (c commentRepository) Save(ctx context.Context, com *comment.Comment) (*commentdto.CommentResponse, error) {
+func (c commentRepository) Save(ctx context.Context, com *comment.Comment) (*commentdto.Raw, error) {
 	m := model.NewCommentModel(com)
-	err := c.db.WithContext(ctx).Save(m).Error
+	err := c.db.WithContext(ctx).Preload("Author").Save(m).Error
 	if err != nil {
 		return nil, err
 	}
-	return mapper.CommentResponseFromModel(m), nil
+	return mapper.ToCommentRaw(m), nil
 }
 
-func (c commentRepository) FindByPost(ctx context.Context, postId int) ([]commentdto.CommentResponse, error) {
-	var rows []mapper.CommentRaw
+func (c commentRepository) FindByPost(ctx context.Context, postId int) ([]commentdto.Raw, error) {
+	var rows []commentdto.Raw
 	err := c.db.WithContext(ctx).Table("comments as c").
 		Select(`c.id, c.author_id, u.name as author_name,
 			c.content, c.created_at, c.updated_at
@@ -38,5 +38,5 @@ func (c commentRepository) FindByPost(ctx context.Context, postId int) ([]commen
 	if err != nil {
 		return nil, err
 	}
-	return mapper.ToCommentResponseList(rows), nil
+	return rows, nil
 }
