@@ -8,6 +8,7 @@ import (
 	"github.com/serge1997/go-ddd/internal/domain/user"
 	"github.com/serge1997/go-ddd/internal/infrastructure/mapper"
 	"github.com/serge1997/go-ddd/internal/infrastructure/model"
+	"github.com/serge1997/go-ddd/internal/shared/domain"
 	"gorm.io/gorm"
 )
 
@@ -49,7 +50,7 @@ func (u userRepository) Find(ctx context.Context, id int) (*user.User, error) {
 	var user model.UserModel
 	if err := u.db.WithContext(ctx).Where("id = ?", id).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
+			return nil, domain.ErrNotFound
 		}
 		return nil, fmt.Errorf("find post: %w", err)
 	}

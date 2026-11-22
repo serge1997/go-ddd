@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/serge1997/go-ddd/internal/application/dto/userdto"
 	"github.com/serge1997/go-ddd/internal/application/usecase/useruc"
+	"github.com/serge1997/go-ddd/internal/shared/domain"
 )
 
 func ShowUser(usecase useruc.GetUseCase) http.HandlerFunc {
@@ -21,7 +22,7 @@ func ShowUser(usecase useruc.GetUseCase) http.HandlerFunc {
 		}
 		response := usecase.Execute(r.Context(), id)
 		if response.IsFail() {
-			respondWithError(w, http.StatusInternalServerError, fmt.Errorf("erro on get user: %s", response.Error()))
+			respondWithError(w, domain.StatusFromError(response.Error()), fmt.Errorf("erro on get user: %s", response.Error()))
 			return
 		}
 		responseOk(w, http.StatusOK, fmt.Sprintf("showing a user, id: %d", id), response.Value())
