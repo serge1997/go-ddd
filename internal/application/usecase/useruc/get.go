@@ -21,5 +21,8 @@ func (u GetUseCase) Execute(ctx context.Context, id int) result.Result[userdto.U
 	if err != nil {
 		return result.Fail[userdto.UserResponseDTO](err)
 	}
+	if finded == nil {
+		return result.Fail[userdto.UserResponseDTO](user.ErrNotFound)
+	}
 	return result.Ok(user.ToResponse(finded))
 }

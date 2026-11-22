@@ -1,8 +1,12 @@
 package user
 
 import (
+	"errors"
+
 	"github.com/serge1997/go-ddd/internal/application/dto/userdto"
 )
+
+var ErrNotFound = errors.New("user not found")
 
 type User struct {
 	Id    int

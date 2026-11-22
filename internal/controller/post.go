@@ -52,6 +52,7 @@ func ShowPost(usecase postuc.GetUseCase) http.HandlerFunc {
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			respondWithError(w, http.StatusInternalServerError, fmt.Errorf("erro on parse id to string: %s", err))
+			return
 		}
 		result := usecase.Execute(r.Context(), id)
 		if result.IsFail() {

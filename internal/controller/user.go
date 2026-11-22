@@ -17,10 +17,12 @@ func ShowUser(usecase useruc.GetUseCase) http.HandlerFunc {
 		id, err := strconv.Atoi(idparam)
 		if err != nil {
 			respondWithError(w, http.StatusInternalServerError, fmt.Errorf("erro on parse id to string: %s", err))
+			return
 		}
 		response := usecase.Execute(r.Context(), id)
 		if response.IsFail() {
 			respondWithError(w, http.StatusInternalServerError, fmt.Errorf("erro on get user: %s", response.Error()))
+			return
 		}
 		responseOk(w, http.StatusOK, fmt.Sprintf("showing a user, id: %d", id), response.Value())
 	}
