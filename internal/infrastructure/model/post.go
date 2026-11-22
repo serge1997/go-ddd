@@ -9,7 +9,7 @@ import (
 
 type PostModel struct {
 	gorm.Model
-	Id       int       `gorm:"column:id,primaryKey"`
+	Id       int       `gorm:"primaryKey"`
 	Title    string    `gorm:"column:title"`
 	Content  string    `gorm:"column:title"`
 	AuthorId int       `gorm:"column:author_id"`

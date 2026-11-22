@@ -7,7 +7,7 @@ import (
 
 type UserModel struct {
 	gorm.Model
-	Id    int         `gorm:"column:id,primaryKey"`
+	Id    int         `gorm:"primaryKey"`
 	Name  string      `gorm:"column:name"`
 	Email string      `gorm:"column:email"`
 	Posts []PostModel `gorm:"foreignKey:AuthorId"`

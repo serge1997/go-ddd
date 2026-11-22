@@ -56,3 +56,15 @@ func (u userRepository) Find(ctx context.Context, id int) (*user.User, error) {
 	}
 	return mapper.UserToDomain(user), nil
 }
+
+func (u userRepository) FindByEmail(ctx context.Context, email string) (*user.User, error) {
+	var m model.UserModel
+	err := u.db.WithContext(ctx).First(&m, "email = ?", email).Error
+	if err != nil {
+		return nil, err
+	}
+	if m.Id == 0 {
+		return nil, nil
+	}
+	return mapper.UserToDomain(m), nil
+}

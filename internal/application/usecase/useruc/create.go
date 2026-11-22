@@ -2,6 +2,7 @@ package useruc
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/serge1997/go-ddd/internal/application/dto/userdto"
 	"github.com/serge1997/go-ddd/internal/domain/user"
@@ -9,7 +10,7 @@ import (
 )
 
 type CreateUseCase struct {
-	Repository user.Repository
+	repository user.Repository
 }
 
 func NewCreateUseCase(repo user.Repository) CreateUseCase {
@@ -20,8 +21,15 @@ func (u CreateUseCase) Execute(ctx context.Context, dto userdto.UserCreateDTO) r
 	if err := dto.Validate(); err != nil {
 		return result.Fail[userdto.UserResponseDTO](err)
 	}
+	exists, err := u.repository.FindByEmail(ctx, dto.Email)
+	if err != nil {
+		return result.Fail[userdto.UserResponseDTO](err)
+	}
+	if exists != nil {
+		return result.Fail[userdto.UserResponseDTO](fmt.Errorf("user alwready exists"))
+	}
 	us := user.New(dto)
-	created, err := u.Repository.Save(ctx, us)
+	created, err := u.repository.Save(ctx, us)
 	if err != nil {
 		return result.Fail[userdto.UserResponseDTO](err)
 	}

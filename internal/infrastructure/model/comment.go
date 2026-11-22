@@ -7,7 +7,7 @@ import (
 )
 
 type CommentModel struct {
-	Id        int `gorm:"column:id,primaryKey"`
+	Id        int `gorm:"primaryKey"`
 	Content   string
 	AuthorId  int
 	PostId    int
