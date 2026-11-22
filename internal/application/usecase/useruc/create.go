@@ -2,10 +2,11 @@ package useruc
 
 import (
 	"context"
-	"fmt"
+	"errors"
 
 	"github.com/serge1997/go-ddd/internal/application/dto/userdto"
 	"github.com/serge1997/go-ddd/internal/domain/user"
+	"github.com/serge1997/go-ddd/internal/shared/domain"
 	"github.com/serge1997/go-ddd/internal/shared/result"
 )
 
@@ -22,11 +23,11 @@ func (u CreateUseCase) Execute(ctx context.Context, dto userdto.UserCreateDTO) r
 		return result.Fail[userdto.UserResponseDTO](err)
 	}
 	exists, err := u.repository.FindByEmail(ctx, dto.Email)
-	if err != nil {
+	if err != nil && !errors.Is(err, domain.ErrNotFound) {
 		return result.Fail[userdto.UserResponseDTO](err)
 	}
 	if exists != nil {
-		return result.Fail[userdto.UserResponseDTO](fmt.Errorf("user alwready exists"))
+		return result.Fail[userdto.UserResponseDTO](user.ErrEmailExists)
 	}
 	us := user.New(dto)
 	created, err := u.repository.Save(ctx, us)

@@ -61,6 +61,9 @@ func (u userRepository) FindByEmail(ctx context.Context, email string) (*user.Us
 	var m model.UserModel
 	err := u.db.WithContext(ctx).First(&m, "email = ?", email).Error
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, domain.ErrNotFound
+		}
 		return nil, err
 	}
 	if m.Id == 0 {
